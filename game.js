@@ -27,11 +27,7 @@
     return t.content.firstElementChild;
   }
 
-  function track(name, props) {
-    if (typeof window.plausible === "function") {
-      try { window.plausible(name, props ? { props } : undefined); } catch (e) { /* ignore */ }
-    }
-  }
+  const A = window.jupAnalytics || { visitStarted() {}, caseValidated() {}, visitEnded() {} };
 
   function updateHud() {
     if (!S) { hud.hidden = true; progressBar.style.width = "0"; return; }
@@ -78,7 +74,7 @@
     else if (mode === "essentiel") queue = CASES.filter(c => c.niveau === "Essentiel");
     else queue = CASES.slice();
     S = { mode, queue, idx: 0, score: 0, max: 0, days: 0, risk: 0, missedKt: 0, relais: 0, relaisPossibles: 0, results: [], validated: false };
-    track("Partie lancée", { mode });
+    A.visitStarted(mode);
     renderCase();
   }
 
@@ -347,7 +343,7 @@
     actions.appendChild(next);
     updateHud();
     tk.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    track("Dossier validé", { dossier: c.id, score: Math.round(ratio * 100) });
+    A.caseValidated(CASES.indexOf(c) + 1, riskHere > 0);
   }
 
   /* ---------- Bilan ---------- */
@@ -357,7 +353,7 @@
     if (pct >= 85 && S.risk === 0) { label = "Référent pertinence"; sub = "Vos décisions retirent des cathéters inutiles sans prendre de risque pour le patient."; }
     else if (pct >= 65) { label = "Bon réflexe de réévaluation"; sub = "La démarche est acquise. Quelques situations particulières méritent un second regard."; }
     else { label = "Réévaluation à consolider"; sub = "Reprenez la grille de relais et la règle de retrait dès que l'indication disparaît."; }
-    track("Partie terminée", { mode: S.mode, score: pct });
+    if (!S.ended) { S.ended = true; A.visitEnded(S.risk > 0); }
     S.idx = S.queue.length - 1; S.validated = true; updateHud();
 
     app.innerHTML = "";

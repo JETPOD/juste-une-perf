@@ -1,0 +1,30 @@
+/* Juste une perf ? · Mesure d'audience Plausible.
+   Schéma fermé : aucun texte libre, aucun score individuel, aucune propriété personnalisée,
+   aucun identifiant d'apprenant. Ce fichier doit précéder l'initialisation de Plausible.
+   Les noms commencent par « JUP » pour les distinguer des autres jeux du site jetpod.github.io. */
+(() => {
+  const allowed = /^(pageview|engagement|JUP Visite (complète|express|essentiels) lancée|JUP Dossier (0[1-9]|1[0-4]) (validé|erreur à risque)|JUP Visite terminée (sans|avec) erreur à risque)$/;
+  const MODES = { full: "complète", express: "express", essentiel: "essentiels" };
+  function send(name) {
+    if (!allowed.test(name)) return;
+    try { if (typeof window.plausible === "function") window.plausible(name); } catch (e) { /* Ne jamais bloquer le jeu. */ }
+  }
+  window.jupAnalytics = {
+    allowed,
+    transformRequest(payload) {
+      if (!payload || !allowed.test(payload.n)) return null;
+      payload.u = location.origin + location.pathname;
+      payload.r = null;
+      delete payload.p;
+      delete payload.$;
+      return payload;
+    },
+    visitStarted(mode) { if (MODES[mode]) send(`JUP Visite ${MODES[mode]} lancée`); },
+    caseValidated(num, hadRisk) {
+      const code = String(num).padStart(2, "0");
+      send(`JUP Dossier ${code} validé`);
+      if (hadRisk) send(`JUP Dossier ${code} erreur à risque`);
+    },
+    visitEnded(hadRisk) { send(`JUP Visite terminée ${hadRisk ? "avec" : "sans"} erreur à risque`); }
+  };
+})();

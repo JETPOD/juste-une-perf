@@ -16,7 +16,7 @@ SF2H 2019 cathéters périphériques ; HAS critères qualité CVP ; UKHSA IVOS ;
 
 ## Statut
 Prototype. Relecture EOH et référent antibiotiques requise avant usage institutionnel.
-Suivi d'audience : appels `plausible()` prêts (événements « Partie lancée », « Dossier validé », « Partie terminée »), script non inclus.
+Suivi d'audience : Plausible, sans cookie, chargé uniquement sur `jetpod.github.io/juste-une-perf/` (iframe WordPress comprise). 33 événements agrégés sans score ni réponse individuelle. Objectifs à créer et règles de lecture : voir [ANALYTICS.md](ANALYTICS.md).
 
 Application statique (HTML, CSS, JS), sans backend ni stockage.
 
