@@ -7,42 +7,42 @@ Le jeu utilise le script Plausible déjà associé au site `jetpod.github.io`, c
 Dans Plausible, ouvrir le site **jetpod.github.io**, puis **Settings → Goals → Add goal → Custom event**. Créer les 33 objectifs suivants avec les noms exacts (accents, espaces et zéros initiaux compris) :
 
 ```text
-JUP Visite complète lancée
-JUP Visite express lancée
-JUP Visite essentiels lancée
-JUP Dossier 01 validé
-JUP Dossier 02 validé
-JUP Dossier 03 validé
-JUP Dossier 04 validé
-JUP Dossier 05 validé
-JUP Dossier 06 validé
-JUP Dossier 07 validé
-JUP Dossier 08 validé
-JUP Dossier 09 validé
-JUP Dossier 10 validé
-JUP Dossier 11 validé
-JUP Dossier 12 validé
-JUP Dossier 13 validé
-JUP Dossier 14 validé
-JUP Dossier 01 erreur à risque
-JUP Dossier 02 erreur à risque
-JUP Dossier 03 erreur à risque
-JUP Dossier 04 erreur à risque
-JUP Dossier 05 erreur à risque
-JUP Dossier 06 erreur à risque
-JUP Dossier 07 erreur à risque
-JUP Dossier 08 erreur à risque
-JUP Dossier 09 erreur à risque
-JUP Dossier 10 erreur à risque
-JUP Dossier 11 erreur à risque
-JUP Dossier 12 erreur à risque
-JUP Dossier 13 erreur à risque
-JUP Dossier 14 erreur à risque
-JUP Visite terminée sans erreur à risque
-JUP Visite terminée avec erreur à risque
+Juste une perf · Visite complète lancée
+Juste une perf · Visite express lancée
+Juste une perf · Visite essentiels lancée
+Juste une perf · Dossier 01 validé
+Juste une perf · Dossier 02 validé
+Juste une perf · Dossier 03 validé
+Juste une perf · Dossier 04 validé
+Juste une perf · Dossier 05 validé
+Juste une perf · Dossier 06 validé
+Juste une perf · Dossier 07 validé
+Juste une perf · Dossier 08 validé
+Juste une perf · Dossier 09 validé
+Juste une perf · Dossier 10 validé
+Juste une perf · Dossier 11 validé
+Juste une perf · Dossier 12 validé
+Juste une perf · Dossier 13 validé
+Juste une perf · Dossier 14 validé
+Juste une perf · Dossier 01 erreur à risque
+Juste une perf · Dossier 02 erreur à risque
+Juste une perf · Dossier 03 erreur à risque
+Juste une perf · Dossier 04 erreur à risque
+Juste une perf · Dossier 05 erreur à risque
+Juste une perf · Dossier 06 erreur à risque
+Juste une perf · Dossier 07 erreur à risque
+Juste une perf · Dossier 08 erreur à risque
+Juste une perf · Dossier 09 erreur à risque
+Juste une perf · Dossier 10 erreur à risque
+Juste une perf · Dossier 11 erreur à risque
+Juste une perf · Dossier 12 erreur à risque
+Juste une perf · Dossier 13 erreur à risque
+Juste une perf · Dossier 14 erreur à risque
+Juste une perf · Visite terminée sans erreur à risque
+Juste une perf · Visite terminée avec erreur à risque
 ```
 
-Un événement personnalisé n'apparaît dans le tableau de bord qu'une fois l'objectif correspondant créé, et le suivi n'est pas rétroactif ([documentation Plausible](https://plausible.io/docs/custom-event-goals)). Le préfixe `JUP` distingue ces objectifs de ceux des autres jeux du même site. Pour les pages vues, filtrer sur la page `/juste-une-perf/`.
+Un événement personnalisé n'apparaît dans le tableau de bord qu'une fois l'objectif correspondant créé, et le suivi n'est pas rétroactif ([documentation Plausible](https://plausible.io/docs/custom-event-goals)). Le préfixe `Juste une perf · ` distingue ces objectifs de ceux des autres jeux du même site. Pour les pages vues, filtrer sur la page `/juste-une-perf/`.
 
 ## Correspondance des dossiers
 
@@ -67,10 +67,10 @@ Le numéro suit l'ordre de la visite complète, quel que soit le mode joué.
 
 ## Ce qui est compté
 
-- **JUP Visite … lancée** : clic sur un mode de visite. Un « Rejouer » compte une nouvelle visite.
-- **JUP Dossier NN validé** : validation du dossier (une fois par tentative).
-- **JUP Dossier NN erreur à risque** : au moins une décision classée à risque dans ce dossier (relais ou retrait dangereux, maintien IV d'un traitement à arrêter, etc.).
-- **JUP Visite terminée sans / avec erreur à risque** : affichage du bilan, une fois par visite.
+- **Juste une perf · Visite … lancée** : clic sur un mode de visite. Un « Rejouer » compte une nouvelle visite.
+- **Juste une perf · Dossier NN validé** : validation du dossier (une fois par tentative).
+- **Juste une perf · Dossier NN erreur à risque** : au moins une décision classée à risque dans ce dossier (relais ou retrait dangereux, maintien IV d'un traitement à arrêter, etc.).
+- **Juste une perf · Visite terminée sans / avec erreur à risque** : affichage du bilan, une fois par visite.
 
 Lecture utile : le rapport « erreur à risque / validé » par dossier repère les situations les plus mal maîtrisées ; le rapport « terminée / lancée » mesure l'abandon en cours de visite.
 
