@@ -19,3 +19,8 @@ Prototype. Relecture EOH et référent antibiotiques requise avant usage institu
 Suivi d'audience : appels `plausible()` prêts (événements « Partie lancée », « Dossier validé », « Partie terminée »), script non inclus.
 
 Application statique (HTML, CSS, JS), sans backend ni stockage.
+
+## Publication
+
+- Jeu en ligne : https://jetpod.github.io/juste-une-perf/
+- Article de présentation (iframe) : https://nutricellscience.blog/2026/11/10/juste-une-perf-serious-game-catheters-relais-per-os/
