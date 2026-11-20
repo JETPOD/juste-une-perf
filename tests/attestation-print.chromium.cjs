@@ -11,7 +11,7 @@ const script = path.join(__dirname, '..', 'attestation.js');
 const firstName = 'Camille Dupont';
 const secondName = 'Morgan Martin';
 
-async function fixture(t) {
+async function fixture(t, scriptPath = script) {
   const browser = await chromium.launch({
     executablePath: process.env.CHROMIUM_PATH || undefined,
   });
@@ -26,7 +26,7 @@ async function fixture(t) {
     window.printCalls = 0;
     window.print = () => { window.printCalls += 1; };
   });
-  await page.addScriptTag({ path: script });
+  await page.addScriptTag({ path: scriptPath });
   return page;
 }
 
@@ -45,17 +45,41 @@ async function assertClean(page, name) {
   assert.ok(!(await page.content()).includes(name));
 }
 
+function pages(info) {
+  const count = /Pages:\s+(\d+)/.exec(info);
+  assert.ok(count, info);
+  return Number(count[1]);
+}
+
+async function render(page, printOptions) {
+  const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true, ...printOptions });
+  const text = execFileSync('pdftotext', ['-layout', '-', '-'], { input: pdf, encoding: 'utf8' });
+  const info = execFileSync('pdfinfo', ['-'], { input: pdf, encoding: 'utf8' });
+  return { text, info };
+}
+
 test('deux PDF A4 successifs ne contiennent que le nom correspondant', async (t) => {
   const page = await fixture(t);
+  const baselinePath = process.env.ATTESTATION_BASELINE;
+  const baseline = baselinePath && await fixture(t, baselinePath);
+  const options = process.env.EXPLICIT_A4 ? { format: 'A4', landscape: true } : {};
   for (const [index, name] of [firstName, secondName].entries()) {
     await submit(page, name, index + 1);
-    const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true });
-    const text = execFileSync('pdftotext', ['-', '-'], { input: pdf, encoding: 'utf8' });
-    const info = execFileSync('pdfinfo', ['-'], { input: pdf, encoding: 'utf8' });
+    const { text, info } = await render(page, options);
     assert.ok(text.includes(name));
     assert.ok(!text.includes(index === 0 ? secondName : firstName));
     assert.ok(text.includes('Service fictif'));
-    assert.match(info, /Pages:\s+1\b/);
+    if (baseline) {
+      await submit(baseline, name, index + 1);
+      const original = await render(baseline, options);
+      const cleanReference = s => s.replace(/SG-\d{8}-[A-Z0-9]{3}/g, 'SG-REFERENCE');
+      console.log('PDF pages, original and patched:', pages(original.info), pages(info));
+      console.log('Contains text by page:', text.split('\f').slice(0, -1).map(p => Boolean(p.trim())));
+      assert.equal(pages(info), pages(original.info));
+      assert.equal(cleanReference(text), cleanReference(original.text));
+    } else {
+      assert.equal(pages(info), 1);
+    }
     const size = /Page size:\s+([\d.]+) x ([\d.]+) pts/.exec(info);
     assert.ok(size, info);
     assert.ok(Math.abs(Number(size[1]) - 841.89) < 2, info);

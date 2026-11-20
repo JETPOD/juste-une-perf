@@ -14,11 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install test dependencies
+        id: deps
         run: |
           npm install --no-save --ignore-scripts playwright@1.58.2
           npx playwright install --with-deps chromium
           sudo apt-get install -y xvfb xdotool openbox poppler-utils
       - name: Check two generated PDFs and DOM cleanup
-        run: node --test tests/attestation-print.chromium.cjs
+        run: |
+          git fetch --depth=1 origin c06d3854aad8625fa89d2c7a926191e6f39a04c9
+          git show FETCH_HEAD:attestation.js > "$RUNNER_TEMP/attestation-before.js"
+          export ATTESTATION_BASELINE="$RUNNER_TEMP/attestation-before.js"
+          node --test tests/attestation-print.chromium.cjs
+          EXPLICIT_A4=1 node --test tests/attestation-print.chromium.cjs
       - name: Close the actual Chromium print preview
+        if: always() && steps.deps.outcome == 'success'
         run: xvfb-run -a -s '-screen 0 1280x960x24' sh -c 'openbox & node --test tests/attestation-preview.qa.cjs'
