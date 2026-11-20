@@ -1,0 +1,24 @@
+name: Validation du cycle d’impression
+
+on:
+  push:
+    branches: [qa/attestation-print-browser]
+
+permissions:
+  contents: read
+
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test dependencies
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.58.2
+          npx playwright install --with-deps chromium
+          sudo apt-get install -y xvfb xdotool openbox poppler-utils
+      - name: Check two generated PDFs and DOM cleanup
+        run: node --test tests/attestation-print.chromium.cjs
+      - name: Close the actual Chromium print preview
+        run: xvfb-run -a -s '-screen 0 1280x960x24' sh -c 'openbox & node --test tests/attestation-preview.qa.cjs'
