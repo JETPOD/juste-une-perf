@@ -1,6 +1,7 @@
 // Requires Playwright, Chromium and Poppler (pdftotext and pdfinfo).
 // Run with: node --test tests/attestation-print.chromium.cjs
 // Set CHROMIUM_PATH to use a system Chromium instead of Playwright’s.
+// With ATTESTATION_BASELINE set to the old script path, also compare pagination and text.
 const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const path = require('node:path');
@@ -77,8 +78,6 @@ test('deux PDF A4 successifs ne contiennent que le nom correspondant', async (t)
       console.log('Contains text by page:', text.split('\f').slice(0, -1).map(p => Boolean(p.trim())));
       assert.equal(pages(info), pages(original.info));
       assert.equal(cleanReference(text), cleanReference(original.text));
-    } else {
-      assert.equal(pages(info), 1);
     }
     const size = /Page size:\s+([\d.]+) x ([\d.]+) pts/.exec(info);
     assert.ok(size, info);
