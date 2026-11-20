@@ -394,10 +394,15 @@
         <div class="actions">
           <button class="btn ghost" type="button" id="home2">Changer de visite</button>
           <button class="btn" type="button" id="again">Rejouer cette visite</button>
+          <button class="btn" type="button" id="attest">Obtenir mon attestation</button>
         </div>
       </section>`);
     node.querySelector("#home2").addEventListener("click", renderHome);
     node.querySelector("#again").addEventListener("click", () => start(S.mode));
+    node.querySelector("#attest").addEventListener("click", () => {
+      const lbl = { full: "visite complète", express: "visite express", essentiel: "visite des essentiels" }[S.mode] || "visite";
+      window.SGAttestation && window.SGAttestation.open({ jeu: "Juste une perf ?", module: `${lbl} de ${S.queue.length} dossiers`, code: "JUP", color: "#1f4e79", ratio: S.score / S.max, critical: S.risk });
+    });
     app.appendChild(node);
     window.scrollTo({ top: 0 });
   }

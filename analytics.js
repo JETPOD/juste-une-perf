@@ -3,7 +3,7 @@
    aucun identifiant d'apprenant. Ce fichier doit précéder l'initialisation de Plausible.
    Les noms commencent par « Juste une perf · » pour les distinguer des autres jeux du site jetpod.github.io. */
 (() => {
-  const allowed = /^(pageview|engagement|Juste une perf · Visite (complète|express|essentiels) lancée|Juste une perf · Dossier (0[1-9]|1[0-4]) (validé|erreur à risque)|Juste une perf · Visite terminée (sans|avec) erreur à risque)$/;
+  const allowed = /^(pageview|engagement|Attestation · (Participation|Réussite|Excellence)|Juste une perf · Visite (complète|express|essentiels) lancée|Juste une perf · Dossier (0[1-9]|1[0-4]) (validé|erreur à risque)|Juste une perf · Visite terminée (sans|avec) erreur à risque)$/;
   const MODES = { full: "complète", express: "express", essentiel: "essentiels" };
   function send(name) {
     if (!allowed.test(name)) return;
